@@ -96,9 +96,6 @@ Admins can manage products, categories, and orders via the built-in **admin pane
 
 ---
 
-## 📸 Screenshots (Optional)
-
-_Add screenshots of your app & chatbot interface here._
 
 ---
 
