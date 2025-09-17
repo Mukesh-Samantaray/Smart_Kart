@@ -1,0 +1,8 @@
+{% extends "accounts/home.html" %}
+{% block content %}
+<div class="container mt-4 text-center">
+    <h3>🎉 Order Placed Successfully!</h3>
+    <p>Thank you for shopping with us. Your order is <strong>Yet to be Delivered</strong>.</p>
+    <a href="{% url 'orders:order_list' %}" class="btn btn-primary">View My Orders</a>
+</div>
+{% endblock %}

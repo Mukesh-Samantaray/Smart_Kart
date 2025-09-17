@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SmartKart{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a class="logo" href="{% url 'home' %}">
+                <img src="{% static 'accounts/images/logo.png' %}" alt="SmartKart">
+            </a>
+
+            <!-- Search Bar -->
+            <form class="search-bar" method="GET" action="{% url 'products:search_products' %}">
+                <input type="search" placeholder="Search products" name="q">
+                <button type="submit">Search</button>
+            </form>
+
+            <!-- Right Menu -->
+            <ul class="nav-links">
+                <li>Hello, {{ request.user.first_name }}</li>
+                <li><a href="{% url 'logout' %}" class="btn danger">Logout</a></li>
+                <li><a href="{% url 'cart:cart_detail' %}" class="btn primary">Cart ({{ cart_total_qty }})</a></li>
+                <li><a href="{% url 'profiles:profile' %}" class="btn secondary">My Profile</a></li>
+            </ul>
+
+            <!-- Hamburger Menu for Mobile -->
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 SmartKart | About | Contact | Terms & Privacy</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+    {% include 'chatbot/chat.html' %}
+</body>
+</html>

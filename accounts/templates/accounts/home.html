@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}SmartKart Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/home.css' %}">
+{% endblock %}
+{% block content %}
+
+<!-- Categories -->
+<div class="container categories">
+    <h5>Categories</h5>
+    <div class="category-list">
+        {% for cat in categories %}
+            {% if cat.slug %}
+                <a href="{% url 'products:category_products' cat.slug %}" class="btn secondary small">
+                    {{ cat.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Featured Products -->
+<h5 class="section-title">Featured Products</h5>
+<div class="product-grid grid grid-cols-4">
+    {% for product in products %}
+        <div class="product-card card">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="card-img">
+            <div class="card-body">
+                <h6 class="truncate card-title">{{ product.name }}</h6>
+                <p class="price card-text">₹{{ product.price }}</p>
+                <a href="{% url 'products:product_detail' product.pk %}" class="btn primary small">View</a>
+                <form method="post" action="{% url 'cart:add_to_cart' product.pk %}" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn outline small">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">No products available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

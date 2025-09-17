@@ -1,0 +1,62 @@
+{% extends 'accounts/home.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orders/css/order_list.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Orders</h2>
+    {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <div class="order-id">Order #{{ order.id }}</div>
+                    <div class="order-status">{{ order.status }}</div>
+                </div>
+                <div class="order-details">
+                    <div class="order-info">
+                        <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+                        <p><strong>Payment:</strong> {{ order.payment_method|title }}</p>
+                        <p><strong>Address:</strong>
+                            {% if order.address %}
+                                {{ order.address.name }}, {{ order.address.street }}, {{ order.address.city }}
+                            {% else %}
+                                Not selected
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="order-items">
+                        <h6>Items:</h6>
+                        <ul>
+                            {% for item in order.items.all %}
+                            <li class="item">
+                                {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+                                {% else %}
+                                    <img src="{% static 'accounts/images/default.png' %}" alt="No image">
+                                {% endif %}
+                                <span>{{ item.product.name }} x {{ item.quantity }} - ₹{{ item.price }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <a href="{% url 'orders:order_detail' order.id %}" class="btn primary small">View</a>
+                    {% if order.status == "Pending" %}
+                        <a href="{% url 'orders:cancel_order' order.id %}" class="btn danger small">Cancel</a>
+                    {% endif %}
+                    {% if order.payment_method == "online" and not order.is_paid %}
+                        <a href="{% url 'orders:payment' order.id %}" class="btn success small">Pay Now</a>
+                    {% endif %}
+                    <a href="{% url 'orders:track_order' order.id %}" class="btn outline small">Track</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+</div>
+{% endblock %}

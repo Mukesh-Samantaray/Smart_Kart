@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartKart Sign Up</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/signup.css' %}">
+</head>
+<body>
+
+<div class="signup-container">
+    <div class="signup-card">
+        <div class="logo-container">
+            <img src="{% static 'accounts/images/logo.png' %}" alt="SmartKart Logo" width="150">
+            <h3>Create Your SmartKart Account</h3>
+        </div>
+
+        <form method="post" class="signup-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn primary w-100">Sign Up</button>
+        </form>
+
+        <p class="login-text">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

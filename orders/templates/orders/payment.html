@@ -1,0 +1,23 @@
+{% extends 'accounts/home.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Payment for Order #{{ order.id}}</h3>
+    <p>Total Amount: ₹{{ order.total_price }}</p>
+    <p>Status: {{ order.status }}</p>
+
+    {% if not order.is_paid %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success mb-2">Pay Now </button>
+        </form>
+    {% else %}
+        <div class="alert alert-success mt-3">Payment completed!</div>
+    {% endif %}
+
+    <hr>
+    <h5>Or pay using UPI</h5>
+    <p>Scan this QR code with Google Pay or any UPI app:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=upi://pay?pa={{ upi_id }}&pn=SmartKart&am={{ amount }}&cu=INR&size=200x200" alt="UPI QR Code">
+    <p>Or use UPI ID: <strong>{{ upi_id }}</strong></p>
+</div>
+{% endblock %}

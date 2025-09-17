@@ -1,0 +1,8 @@
+{% extends 'accounts/home.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Payment Failed!</h3>
+    <p>Sorry, your payment for Order #{{ order.id }} was not successful.</p>
+    <a href="{% url 'orders:order_list' %}" class="btn btn-danger mt-3">Back to Orders</a>
+</div>
+{% endblock %}

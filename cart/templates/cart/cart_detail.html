@@ -1,0 +1,83 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'cart/css/cart_detail.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h3>My Cart</h3>
+    {% if cart_items %}
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <div class="item-image">
+                {% if item.product.image_url %}
+                <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+                {% else %}
+                <img src="{% static 'accounts/images/default.png' %}" alt="No image">
+                {% endif %}
+            </div>
+            <div class="item-details">
+                <h6>{{ item.product.name }}</h6>
+                <p>Price: ₹{{ item.product.price }}</p>
+                <div class="quantity-controls">
+                    <form method="POST" action="{% url 'cart:add_to_cart' item.product.id %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn success small">+</button>
+                    </form>
+                    <span>{{ item.quantity }}</span>
+                    <form method="POST" action="{% url 'cart:remove_from_cart' item.product.id %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn danger small">-</button>
+                    </form>
+                </div>
+                <p>Total: ₹{{ item.total_price }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="cart-total">
+        <p><strong>Total: ₹{{ cart_total }}</strong></p>
+    </div>
+
+    {% if cart_items %}
+    <!-- Step: Place Order -->
+    <div class="place-order mt-4">
+        <h5>Select Shipping Address & Place Order</h5>
+        <form method="POST" action="{% url 'orders:create_order' %}">
+            {% csrf_token %}
+
+            <!-- Address Selection -->
+            {% if addresses %}
+            <div class="form-group mb-3">
+                <label for="addressSelect">Choose Address:</label>
+                <select id="addressSelect" name="address_id" required>
+                    {% for address in addresses %}
+                    <option value="{{ address.id }}">{{ address.name }}, {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.pincode }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mb-3">
+               <label>Payment Method:</label><br>
+               <input type="radio" name="payment_method" value="cod" required> Cash on Delivery <br>
+               <input type="radio" name="payment_method" value="online" checked> Online Payment
+            </div>
+
+            {% else %}
+            <p>No addresses found. <a href="{% url 'profiles:add_address' %}">Add New Address</a></p>
+            {% endif %}
+
+            <!-- Place Order Button -->
+            <button type="submit" class="btn success w-100">
+                Place Order
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'accounts/home.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'orders/css/order_detail.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container mt-4 order-detail">
+    <h3>Order #{{ order.id }}</h3>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+    <p><strong>Payment Method:</strong> {{ order.payment_method|title }}</p>
+    <p><strong>Address:</strong>
+        {% if order.address %}
+            {{ order.address.name }}, {{ order.address.street }}, {{ order.address.city }}
+        {% else %}
+            Not selected
+        {% endif %}
+    </p>
+    <h4>Items</h4>
+    <ul class="item-list">
+        {% for item in order.items.all %}
+            <li class="item">
+                {% if item.product.image_url %}
+                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+                {% else %}
+                    <img src="{% static 'accounts/images/default.png' %}" alt="No image">
+                {% endif %}
+                <div class="item-info">
+                    <strong>{{ item.product.name }}</strong><br>
+                    Quantity: {{ item.quantity }}<br>
+                    Price: ₹{{ item.price }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="actions mt-3">
+        {% if order.status == "Pending" %}
+            <a href="{% url 'orders:cancel_order' order.id %}" class="btn danger">Cancel Order</a>
+        {% endif %}
+        {% if order.payment_method == "online" and not order.is_paid %}
+            <a href="{% url 'orders:payment' order.id %}" class="btn success">Proceed to Payment</a>
+        {% endif %}
+        <a href="{% url 'orders:track_order' order.id %}" class="btn outline">Track Order</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+/* ================ Categories ================ */
+.categories {
+  padding: 1rem 0;
+}
+
+.category-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn.secondary.small {
+  padding: 0.35rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* ================ Section Title ================ */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ================ Product Grid ================ */
+.product-grid {
+  margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid.grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .categories {
+    padding: 0.5rem 0;
+  }
+
+  .category-list {
+    justify-content: center;
+  }
+}
+
+/* ================ Inline Form ================ */
+.inline-form {
+  display: inline;
+}
+
+/* ================ Text Muted ================ */
+.text-muted {
+  color: #6b7280;
+  font-style: italic;
+}

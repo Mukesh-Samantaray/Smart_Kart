@@ -1,0 +1,12 @@
+{% extends "accounts/home.html"  %}
+{% block content %}
+<div class="container mt-4">
+    <h3>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Address</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success mt-2" type="submit">Save</button>
+        <a href="{% url 'profiles:profile' %}" class="btn btn-secondary mt-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}
